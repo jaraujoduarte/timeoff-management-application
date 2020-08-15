@@ -1,9 +1,9 @@
-name: Monet Deploy Test
+name: Deploy
 
 on:
   push:
     branches:
-    - develop
+    - master
 
 jobs:
   deployment:
@@ -33,12 +33,13 @@ jobs:
           BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
           ECR_DOMAIN: ${{ secrets.ECR_DOMAIN }}
         run: |
-          docker build -t ${ECR_DOMAIN}/timeoff-management:PR-${PR_NUMBER} .
-          docker push ${ECR_DOMAIN}/timeoff-management:PR-${PR_NUMBER}
+          docker build -t ${ECR_DOMAIN}/timeoff-management:${BRANCH_NAME} .
+          docker push ${ECR_DOMAIN}/timeoff-management:${BRANCH_NAME}
 
       - name: K8S deploy
         env:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         run: |
           aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name default
-          ./deploy.sh
+          cd k8s
+          helm upgrade --install timeoff-management -f values.yml

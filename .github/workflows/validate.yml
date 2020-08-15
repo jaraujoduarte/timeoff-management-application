@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
     - master
-    - develop
 
 jobs:
   validate:
@@ -15,14 +14,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # - name: Pull cache
-      #   id: cache-python
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: ~/.cache/pip
-      #     key: monet-webapp-dependencies-${{ hashFiles('**/base.txt') }}-${{ hashFiles('**/local.txt') }}
-      #     restore-keys: |
-      #       monet-webapp-dependencies-
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
         run: |

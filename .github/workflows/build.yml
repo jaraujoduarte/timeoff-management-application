@@ -6,7 +6,6 @@ on:
     - 'k8s/**'
     branches:
     - master
-    - develop
 
 jobs:
   build:

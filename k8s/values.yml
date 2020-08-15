@@ -3,7 +3,6 @@ namespace: default
 
 service:
   name: timeoff-management-svc
-  component: app
   port: 8000
   annotations:
 
@@ -12,13 +11,14 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
 
 app:
   name: timeoff-management
   image: 184213278220.dkr.ecr.us-east-1.amazonaws.com/timeoff-management
   tag: PR-1
   imagePullPolicy: Always
-  replicas: 1
+  replicas: 2
   rollingUpdate:
     maxSurge: 1
     maxUnavailable: 0
