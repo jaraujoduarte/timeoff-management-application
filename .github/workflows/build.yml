@@ -31,5 +31,5 @@ jobs:
         PR_NUMBER: ${{ github.event.number }}
         ECR_DOMAIN: ${{ secrets.ECR_DOMAIN }}
       run: |
-        docker build -t ${ECR_DOMAIN}/monet-webapp:PR-${PR_NUMBER} .
-        docker push ${ECR_DOMAIN}/monet-webapp:PR-${PR_NUMBER}
+        docker build -t ${ECR_DOMAIN}/timeoff-management:PR-${PR_NUMBER} .
+        docker push ${ECR_DOMAIN}/timeoff-management:PR-${PR_NUMBER}
