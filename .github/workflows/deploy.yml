@@ -1,0 +1,45 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    name: Build y Publish
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup AWS ECR
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        run: |
+          docker_login=$(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+          eval "${docker_login}"
+
+      - name: Extraer nombre branch
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: Build y push docker image [Branch]
+        env:
+          BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
+          ECR_DOMAIN: ${{ secrets.ECR_DOMAIN }}
+        run: |
+          docker build -t ${ECR_DOMAIN}/timeoff-management:${BRANCH_NAME} .
+          docker push ${ECR_DOMAIN}/timeoff-management:${BRANCH_NAME}
+
+      - name: K8S deploy
+        env:
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        run: |
+          aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name default
+          cd k8s
+          helm upgrade --install timeoff-management -f values.yml

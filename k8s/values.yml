@@ -1,0 +1,40 @@
+---
+namespace: default
+
+service:
+  name: timeoff-management-svc
+  port: 8000
+  annotations:
+
+
+ingress:
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+
+app:
+  name: timeoff-management
+  image: 184213278220.dkr.ecr.us-east-1.amazonaws.com/timeoff-management
+  tag:
+  imagePullPolicy: Always
+  replicas: 2
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+  memory: "128Mi"
+  cpu: "50m"
+  port: 3000
+  service_port: 8000
+  env:
+    SECRETS_DIR: /var/secrets
+    DB_NAME: bar
+    DB_HOST: foo.test.gorilla.internal
+    DB_PORT: 5432
+    DB_USER: foo
+  secrets:
+    db_password:
+  secrets_env:
+  - envName: DB_PASSWORD
+    secretName: timeoff-management
+    secretKey: db_password
