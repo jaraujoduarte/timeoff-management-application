@@ -10,25 +10,9 @@ metadata:
     {{- end }}
 spec:
   rules:
-  {{- range .Values.ingress.sub_domains }}
-  - host: {{ .sub }}
-    http:
+  - http:
       paths:
       - path: /*
         backend:
-          serviceName: {{ .service_name }}
-          servicePort: {{ .service_port }}
-  {{- end }}
-
-
-{{- range .Values.ingress.sub_domains }}
----
-apiVersion: networking.gke.io/v1beta1
-kind: ManagedCertificate
-metadata:
-  name: {{ .cert_name }}
-  namespace: {{ $.Values.namespace }}
-spec:
-  domains:
-  - {{ .sub }}
-{{- end }}
+          serviceName: {{ .Values.service.name }}
+          servicePort: {{ .Values.service.port }}
