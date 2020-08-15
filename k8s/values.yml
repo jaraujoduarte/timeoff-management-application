@@ -16,7 +16,7 @@ ingress:
 app:
   name: timeoff-management
   image: 184213278220.dkr.ecr.us-east-1.amazonaws.com/timeoff-management
-  tag: PR-1
+  tag:
   imagePullPolicy: Always
   replicas: 2
   rollingUpdate:
