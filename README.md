@@ -25,7 +25,7 @@ aws eks --region us-east-1 update-kubeconfig --name default
 
 # CI / CD
 
-The working CI flow consists of:
+![Image of CI CD](docs/timeoff-CI_CD.png)
 
 ### On every push to a Pull Request to the master branch
 - Automated tests run
