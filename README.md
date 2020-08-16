@@ -27,6 +27,8 @@ aws eks --region us-east-1 update-kubeconfig --name default
 
 ![Image of CI CD](docs/timeoff-CI_CD.png)
 
+Automation making use of Github Actions [workflows](.github/workflows)
+
 ### On every push to a Pull Request to the master branch
 - Automated tests run
 - Automated build of the Docker image
