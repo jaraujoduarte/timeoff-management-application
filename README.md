@@ -16,6 +16,8 @@ In order to deploy the resources defined in this repo make sure to set the follo
 ```
 - Kubectl >= 1.16
 - AWS CLI >= 1.17.7
+- Docker CLI >= 19.03.12
+- Helm >= 3.1.1
 ```
 
 After setting up proper credentials for the target environment, make sure to setup the K8S authentication via the AWS CLI:
