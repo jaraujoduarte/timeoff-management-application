@@ -12,7 +12,6 @@ The suggested deployment leverages K8S and it's integration with AWS to provide 
 ## Environment Setup
 
 In order to deploy the resources defined in this repo make sure to set the following tooling in your machine:
-
 ```
 - Kubectl >= 1.16
 - AWS CLI >= 1.17.7
